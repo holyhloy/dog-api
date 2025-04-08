@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from api.models import Breed
+from api.models import Dog
+
+
+admin.site.register(Breed)
+admin.site.register(Dog)
