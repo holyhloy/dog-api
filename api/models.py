@@ -30,3 +30,27 @@ class Breed(models.Model):
 			A Django CharField 'name' for the model
 		"""
 		return self.name
+
+
+class Dog(models.Model):
+	"""Class for a Dog model.
+
+	Used to Django ORM was able to bring data to the database
+
+	Has no attributes.
+	"""
+	name = models.CharField(max_length=50)
+	age = models.IntegerField()
+	breed = models.ForeignKey('Breed', on_delete=models.CASCADE)
+	gender = models.CharField(max_length=50)
+	color = models.CharField(max_length=50)
+	favorite_food = models.CharField(max_length=50)
+	favorite_toy = models.CharField(max_length=50)
+
+	def __str__(self) -> CharField:
+		"""Tells Django what to return when model object calls
+
+		Returns:
+			A Django CharField 'name' for the model
+		"""
+		return self.name
