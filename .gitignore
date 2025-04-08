@@ -1,0 +1,9 @@
+.venv/
+.idea/
+db.sqlite3
+__pycache__/
+/static/
+*.jpg
+*.png
+*.jpeg
+.env
