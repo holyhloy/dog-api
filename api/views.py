@@ -14,7 +14,13 @@ class DogViewSet(viewsets.ModelViewSet):
         average_age_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             avg_age=models.Avg('age')).values('avg_age')
         queryset = Dog.objects.annotate(breed_average_age=models.Subquery(average_age_subquery))
-        print(queryset)
+        serializer = DogSerializer(instance=queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        dog_count_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
+            cnt=models.Count('id')).values('cnt')
+        queryset = Dog.objects.filter(id=kwargs.get('pk')).annotate(dog_count=models.Subquery(dog_count_subquery))
         serializer = DogSerializer(instance=queryset, many=True)
         return Response(serializer.data)
 
