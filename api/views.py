@@ -2,8 +2,8 @@ from django.db import models
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from api.models import Dog
-from api.serializers import DogSerializer
+from api.models import Dog, Breed
+from api.serializers import DogSerializer, BreedSerializer
 
 
 class DogViewSet(viewsets.ModelViewSet):
@@ -17,3 +17,8 @@ class DogViewSet(viewsets.ModelViewSet):
         print(queryset)
         serializer = DogSerializer(instance=queryset, many=True)
         return Response(serializer.data)
+
+
+class BreedViewSet(viewsets.ModelViewSet):
+    queryset = Breed.objects.all()
+    serializer_class = BreedSerializer
