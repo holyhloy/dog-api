@@ -58,8 +58,8 @@ class BreedViewSet(viewsets.ModelViewSet):
     serializer_class = BreedSerializer
 
     def list(self, request, *args, **kwargs):
-        dog_count_subquery = Breed.objects.filter(id=models.OuterRef('id')).annotate(dogs=Dog.objects.filter(breed=models.OuterRef('breeds'))
-                            .values('breed')).annotate(cnt=models.Count('id')).values('cnt')
+        dog_count_subquery = (Dog.objects.filter(breed=models.OuterRef('id')).values('breed')
+                              .annotate(cnt=models.Count('id')).values('cnt'))
         queryset = Breed.objects.annotate(dog_count=models.Subquery(dog_count_subquery))
 
         page = self.paginate_queryset(queryset)
@@ -69,3 +69,10 @@ class BreedViewSet(viewsets.ModelViewSet):
 
         serializer = self.serializer_class(instance=queryset, many=True)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
