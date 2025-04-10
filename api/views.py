@@ -18,7 +18,7 @@ class DogViewSet(viewsets.ModelViewSet):
     def list(self, request: Request, *args, **kwargs) -> Response:
         """
         List a queryset.
-        Uses Subquery to annotate queryset with a average age of dogs of the same breed
+        Uses Subquery to annotate queryset with a average age of dogs of the same breeds
         """
         average_age_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             avg_age=models.Avg('age')).values('avg_age')
@@ -43,7 +43,7 @@ class DogViewSet(viewsets.ModelViewSet):
     def retrieve(self, request: Request, *args, **kwargs) -> Response:
         """
         Retrieve a Dog model instance.
-        Uses Subquery to annotate queryset with a number of dogs of the same breed
+        Uses Subquery to annotate queryset with a number of dogs of the same breeds
         """
         dog_count_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             cnt=models.Count('id')).values('cnt')
@@ -86,7 +86,7 @@ class BreedViewSet(viewsets.ModelViewSet):
     def list(self, request: Request, *args, **kwargs) -> Response:
         """
         List a queryset.
-        Uses Subquery to annotate queryset with a number of dogs of a breed
+        Uses Subquery to annotate queryset with a number of dogs of the same breeds
         """
         dog_count_subquery = (Dog.objects.filter(breed=models.OuterRef('id')).values('breed')
                               .annotate(cnt=models.Count('id')).values('cnt'))

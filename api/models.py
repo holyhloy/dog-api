@@ -3,11 +3,10 @@ from django.db.models import CharField
 
 
 class Breed(models.Model):
-	"""Class for a Breed model.
+	"""
+	Class for a Breed model.
 
 	Used to Django ORM was able to bring data to the database
-
-	Has no attributes.
 	"""
 	SIZE_CHOICES = [
 		('tiny', 'Tiny'),
@@ -24,7 +23,8 @@ class Breed(models.Model):
 	exercise_needs = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
 
 	def __str__(self) -> CharField:
-		"""Tells Django what to return when model object calls
+		"""
+		Tells Django what to return when model object calls
 
 		Returns:
 			A Django CharField 'name' for the model
@@ -33,11 +33,10 @@ class Breed(models.Model):
 
 
 class Dog(models.Model):
-	"""Class for a Dog model.
+	"""
+	Class for a Dog model.
 
 	Used to Django ORM was able to bring data to the database
-
-	Has no attributes.
 	"""
 	name = models.CharField(max_length=50)
 	age = models.IntegerField()
@@ -48,7 +47,8 @@ class Dog(models.Model):
 	favorite_toy = models.CharField(max_length=50)
 
 	def __str__(self) -> CharField:
-		"""Tells Django what to return when model object calls
+		"""
+		Tells Django what to return when model object calls
 
 		Returns:
 			A Django CharField 'name' for the model
