@@ -56,3 +56,16 @@ class DogViewSet(viewsets.ModelViewSet):
 class BreedViewSet(viewsets.ModelViewSet):
     queryset = Breed.objects.all()
     serializer_class = BreedSerializer
+
+    def list(self, request, *args, **kwargs):
+        dog_count_subquery = Breed.objects.filter(id=models.OuterRef('id')).annotate(dogs=Dog.objects.filter(breed=models.OuterRef('breeds'))
+                            .values('breed')).annotate(cnt=models.Count('id')).values('cnt')
+        queryset = Breed.objects.annotate(dog_count=models.Subquery(dog_count_subquery))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.serializer_class(instance=page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.serializer_class(instance=queryset, many=True)
+        return Response(serializer.data)
