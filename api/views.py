@@ -60,7 +60,7 @@ class BreedViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         dog_count_subquery = (Dog.objects.filter(breed=models.OuterRef('id')).values('breed')
                               .annotate(cnt=models.Count('id')).values('cnt'))
-        queryset = Breed.objects.annotate(dog_count=models.Subquery(dog_count_subquery))
+        queryset = Breed.objects.annotate(dog_count=models.Subquery(dog_count_subquery)).order_by('id')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -89,3 +89,8 @@ class BreedViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
