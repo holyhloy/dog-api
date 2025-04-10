@@ -28,7 +28,10 @@ class DogViewSet(viewsets.ModelViewSet):
         dog_count_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             cnt=models.Count('id')).values('cnt')
         queryset = Dog.objects.annotate(dog_count=models.Subquery(dog_count_subquery))
-        instance = queryset.get(id=kwargs.get('pk'))
+        try:
+            instance = queryset.get(id=kwargs.get('pk'))
+        except models.ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = self.serializer_class(instance=instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
