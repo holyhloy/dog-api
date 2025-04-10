@@ -14,6 +14,10 @@ class DogViewSet(viewsets.ModelViewSet):
         average_age_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             avg_age=models.Avg('age')).values('avg_age')
         queryset = Dog.objects.annotate(breed_average_age=models.Subquery(average_age_subquery)).order_by('id')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer = self.serializer_class(instance=queryset, many=True)
         return Response(serializer.data)
 
