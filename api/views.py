@@ -13,25 +13,31 @@ class DogViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         average_age_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             avg_age=models.Avg('age')).values('avg_age')
-        queryset = Dog.objects.annotate(breed_average_age=models.Subquery(average_age_subquery))
-        serializer = DogSerializer(instance=queryset, many=True)
+        queryset = Dog.objects.annotate(breed_average_age=models.Subquery(average_age_subquery)).order_by('id')
+        serializer = self.serializer_class(instance=queryset, many=True)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, *args, **kwargs):
         dog_count_subquery = Dog.objects.filter(breed=models.OuterRef('breed')).values('breed').annotate(
             cnt=models.Count('id')).values('cnt')
         queryset = Dog.objects.annotate(dog_count=models.Subquery(dog_count_subquery))
         instance = queryset.get(id=kwargs.get('pk'))
-        serializer = DogSerializer(instance=instance)
+        serializer = self.serializer_class(instance=instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = DogSerializer(instance, data=request.data, partial=True)
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            data = serializer.data
-            return Response(data)
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
