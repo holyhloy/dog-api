@@ -57,10 +57,10 @@
     pip install -r requirements.txt
    
 
-4. Создайте и настройте .env файл на основе .env.example:\
+4. Создайте и настройте .env файл на основе .env.example:
 
 
-    DB_NAME = your_name
+    ```DB_NAME = your_name
     DB_HOST = localhost
     DB_PORT = 5432
     DB_USER = postgres
@@ -68,7 +68,7 @@
     
     DEBUG=1
     SECRET_KEY=your_secret_key
-    DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+    DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]```
 
 Важно: при запуске приложения в контейнере, переменной \
 DB_HOST необходимо присвоить имя сервиса docker-compose - 'db'
@@ -142,28 +142,28 @@ DB_HOST необходимо присвоить имя сервиса docker-com
         "gender": "Male",\
         "color": "Brown",\
         "favorite_food": "Chicken",\
-        "favorite_toy": "Ball"
-        "breed": 1
+        "favorite_toy": "Ball"\
+        "breed": 1\
     }
    
    
-3. Получить информацию о конкретной собаке (GET на /api/dogs/<id>/):
+3. Получить информацию о конкретной собаке (GET на /api/dogs/id/):
 
    Ответ будет включать количество собак той же породы.
 
 
-4. Обновить информацию о собаке (PUT на /api/dogs/<id>/):
+4. Обновить информацию о собаке (PUT на /api/dogs/id/):
 
    Пример запроса:
    
-   {
-        "name": "Buddy",
-        "age": 4,
-        "gender": "Male",
-        "color": "Brown",
-        "favorite_food": "Fish",
-        "favorite_toy": "Frisbee"
-        "breed": 2
+   {\
+        "name": "Buddy",\
+        "age": 4,\
+        "gender": "Male",\
+        "color": "Brown",\
+        "favorite_food": "Fish",\
+        "favorite_toy": "Frisbee"\
+        "breed": 2\
    }
    
 
@@ -181,33 +181,33 @@ DB_HOST необходимо присвоить имя сервиса docker-com
 
    Пример запроса:
    
-   {
-       "name": "Labrador",
-       "size": "Large",
-       "friendliness": 5,
-       "trainability": 4,
-       "shedding_amount": 3,
-       "exercise_needs": 4
+   {\
+       "name": "Labrador",\
+       "size": "Large",\
+       "friendliness": 5,\
+       "trainability": 4,\
+       "shedding_amount": 3,\
+       "exercise_needs": 4\
    }
 
 
-3. Получить информацию о конкретной породе (GET на /api/breeds/<id>/)
+3. Получить информацию о конкретной породе (GET на /api/breeds/id/)
 
 
-4. Обновить информацию о породе (PUT на /api/breeds/<id>/):
+4. Обновить информацию о породе (PUT на /api/breeds/id/):
 
     Пример запроса:
 
-   {
-       "name": "Labrador",
-       "size": "Large",
-       "friendliness": 1,
-       "trainability": 2,
-       "shedding_amount": 3,
-       "exercise_needs": 4
+   {/
+       "name": "Labrador",/
+       "size": "Large",/
+       "friendliness": 1,/
+       "trainability": 2,/
+       "shedding_amount": 3,/
+       "exercise_needs": 4/
    }
 
 
-5. Удалить породу (DELETE на /api/breeds/<id>/)
+5. Удалить породу (DELETE на /api/breeds/id/)
 
 
